@@ -17,15 +17,13 @@ def migrate_data(oracle_url):
     tmp_db_path = "/tmp/webui.db"
 
     try:
-        # 2. Copy the database to a temporary location (webui.db)
         container_name = os.getenv("CONTAINER_NAME", "openwebui")
         db_path_in_container = "/app/backend/data/webui.db"
         subprocess.run(["docker", "cp", f"{container_name}:{db_path_in_container}", tmp_db_path], check=True)
 
-        # 3. Connect to the temporary databases
         tmp_conn = sqlite3.connect(tmp_db_path)
 
-        # 7. Migrate data to Oracle (your original logic)
+
         logger.debug("Starting data migration process...")
 
         tmp_cursor = tmp_conn.cursor()

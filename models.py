@@ -22,3 +22,11 @@ chat_table = Table('openwebui_chat', metadata,
                     Column('created_at', sqlalchemy.TIMESTAMP),
                     Column('updated_at', sqlalchemy.TIMESTAMP),
                     Column('reflected_at', sqlalchemy.TIMESTAMP))
+
+'''change_log = Table("change_log", metadata,
+                    Column("id", sqlalchemy.Integer, primary_key=True, autoincrement=True),
+                    Column("change_type", sqlalchemy.String(10), nullable=False),
+                    Column("table_name", sqlalchemy.String(50), nullable=False),
+                    Column("record_id", sqlalchemy.String(1024), nullable=False),
+                    Column("change_time", sqlalchemy.TIMESTAMP, default=datetime.now, nullable=False))
+'''
