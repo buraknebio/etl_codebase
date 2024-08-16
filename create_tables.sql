@@ -3,10 +3,10 @@ CREATE TABLE openwebui_user (
     name VARCHAR2(1024),
     email VARCHAR2(1024),
     role VARCHAR2(1024),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    last_active_at TIMESTAMP,
-    reflected_at TIMESTAMP
+    created_at date,
+    updated_at date,
+    last_active_at date,
+    reflected_at date
 );
 
 CREATE TABLE openwebui_chat (
@@ -14,7 +14,7 @@ CREATE TABLE openwebui_chat (
     user_id VARCHAR2(1024),
     title VARCHAR2(1024),
     chat CLOB,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    reflected_at TIMESTAMP
+    created_at date,
+    updated_at date,
+    reflected_at date
 );

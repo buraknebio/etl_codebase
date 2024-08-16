@@ -1,26 +1,59 @@
 import os
 import logging
-from dotenv import load_dotenv
-from testcontainers.oracle import OracleDbContainer
-from .models import metadata
-from .migration import migrate_data
-from sqlalchemy import create_engine
+import sqlite3
+import cx_Oracle
+from migration import migrate_data
 
-load_dotenv()
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
+def openwebui_sync(sqlite_path, oracle_name, oracle_password, oracle_port, oracle_url, oracle_sid, chat_table_name, user_table_name):
+    """
+    Synchronizes data from SQLite to Oracle.
+    """
+
+    # Log environment variables
+    logging.info(f"SQLite Path: {sqlite_path}")
+    logging.info(f"Oracle Name: {oracle_name}")
+    logging.info(f"Oracle Password: {oracle_password}")
+    logging.info(f"Oracle Port: {oracle_port}")
+    logging.info(f"Oracle URL: {oracle_url}")
+    logging.info(f"Oracle SID: {oracle_sid}")
+    logging.info(f"Chat Table Name: {chat_table_name}")
+    logging.info(f"User Table Name: {user_table_name}")
+
+    try:
+        # Call the migrate_data function for data transfer
+        result = migrate_data()
+
+        if result == "ok":
+            logging.info("Data synchronization completed successfully.")
+            return "ok"
+        else:
+            logging.error("Data synchronization failed.")
+            return "not ok"
+
+    except Exception as e:
+        logging.error(f"An error occurred during synchronization: {e}")
+        return "not ok"
+
 
 if __name__ == "__main__":
-    with OracleDbContainer() as oracle:
-        oracle_url = oracle.get_connection_url()
+    # Get environment variables
+    sqlite_path = os.getenv("SQLITE_PATH")
+    oracle_name = os.getenv("ORACLE_NAME")
+    oracle_password = os.getenv("ORACLE_PASSWORD")
+    oracle_port = os.getenv("ORACLE_PORT")
+    oracle_url = os.getenv("ORACLE_URL")
+    oracle_sid = os.getenv("ORACLE_SID")
+    chat_table_name = os.getenv("CHAT_TABLE_NAME")
+    user_table_name = os.getenv("USER_TABLE_NAME")
 
-        # Create tables in Oracle
-        engine = create_engine(oracle_url, arraysize=10000)
-        metadata.create_all(engine)
+    # Run the synchronization function
+    result = openwebui_sync(sqlite_path, oracle_name, oracle_password, oracle_port, oracle_url, chat_table_name,
+                           user_table_name)
 
-        # Migrate data
-        migrate_data(oracle_url)
-
-        print(f"Oracle Connection URL: {oracle.get_connection_url()}")
-        input("Press Enter to stop the container...")
+    if result == "ok":
+        print("Synchronization completed successfully.")
+    else:
+        print("Synchronization failed.")
