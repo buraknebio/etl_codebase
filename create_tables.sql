@@ -1,4 +1,4 @@
-CREATE TABLE openwebui_user (
+CREATE TABLE db_ai_dm.openwebui_user (
     id VARCHAR2(1024) PRIMARY KEY,
     name VARCHAR2(1024),
     email VARCHAR2(1024),
@@ -9,7 +9,7 @@ CREATE TABLE openwebui_user (
     reflected_at date
 );
 
-CREATE TABLE openwebui_chat (
+CREATE TABLE db_ai_dm.openwebui_chat (
     id VARCHAR2(1024) PRIMARY KEY,
     user_id VARCHAR2(1024),
     title VARCHAR2(1024),
