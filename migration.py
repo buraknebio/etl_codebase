@@ -31,9 +31,9 @@ def migrate_data():
             'name': user[1],
             'email': user[2],
             'role': user[3],
-            'created_at': datetime.fromtimestamp(user[4]) if user[4] else None,
-            'updated_at': datetime.fromtimestamp(user[5]) if user[5] else None,
-            'last_active_at': datetime.fromtimestamp(user[6]) if user[6] else None,
+            'created_at': datetime.fromtimestamp(user[4]).date() if user[4] else None,
+            'updated_at': datetime.fromtimestamp(user[5]).date() if user[5] else None,
+            'last_active_at': datetime.fromtimestamp(user[6]).date() if user[6] else None,
             'reflected_at': datetime.now()
         } for user in users]
         session.execute(insert(user_table), user_records)
@@ -51,8 +51,8 @@ def migrate_data():
             'user_id': chat[1],
             'title': chat[2],
             'chat': chat[3],
-            'created_at': datetime.fromtimestamp(chat[4]) if chat[4] else None,
-            'updated_at': datetime.fromtimestamp(chat[5]) if chat[5] else None,
+            'created_at': datetime.fromtimestamp(chat[4]).date() if chat[4] else None,
+            'updated_at': datetime.fromtimestamp(chat[5]).date() if chat[5] else None,
             'reflected_at': datetime.now()
         } for chat in chats]
         session.execute(insert(chat_table), chat_records)
